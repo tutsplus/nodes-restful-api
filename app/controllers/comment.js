@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Comment = mongoose.model("Comment"),
     Article = mongoose.model("Article"),
-    ObjectId = mongoose.Types.ObjectId
+    ObjectId = mongoose.Types.ObjectId;
 
 exports.viewComment = function(req, res) {
     Article.findOne({"comments._id": new ObjectId(req.params.id)}, {"comments.$": 1}, function(err, comment) {
@@ -10,21 +10,21 @@ exports.viewComment = function(req, res) {
             res.json({
                 type: false,
                 data: "Error occured: " + err
-            })
-        } else {
-            if (comment) {
-                res.json({
-                    type: true,
-                    data: new Comment(comment.comments[0])
-                })
-            } else {
-                res.json({
-                    type: false,
-                    data: "Comment: " + req.params.id + " not found"
-                })
-            }
+            });
         }
-    })
+
+        if (comment) {
+            res.json({
+                type: true,
+                data: new Comment(comment.comments[0])
+            });
+        }
+
+        res.json({
+            type: false,
+            data: "Comment: " + req.params.id + " not found"
+        });
+    });
 }
 
 exports.updateComment = function(req, res, next) {
@@ -39,14 +39,14 @@ exports.updateComment = function(req, res, next) {
                 res.json({
                     type: false,
                     data: "Error occured: " + err
-                })
-            } else {
-                res.json({
-                    type: true,
-                    data: "Comment: " + req.params.id + " updated"
-                })
+                });
             }
-    })
+
+            res.json({
+                type: true,
+                data: "Comment: " + req.params.id + " updated"
+            });
+    });
 }
 
 exports.deleteComment = function(req, res, next) {
@@ -58,19 +58,19 @@ exports.deleteComment = function(req, res, next) {
             res.json({
                 type: false,
                 data: "Error occured: " + err
-            })
-        } else {
-            if (article) {
-                res.json({
-                    type: true,
-                    data: article
-                })
-            } else {
-                res.json({
-                    type: false,
-                    data: "Comment: " + req.params.id + " not found"
-                })
-            }
+            });
         }
+
+        if (article) {
+            res.json({
+                type: true,
+                data: article
+            });
+        }
+
+        res.json({
+            type: false,
+            data: "Comment: " + req.params.id + " not found"
+        });
     })
 }

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Article = mongoose.model("Article"),
     Comment = mongoose.model("Comment"),
-    ObjectId = mongoose.Types.ObjectId
+    ObjectId = mongoose.Types.ObjectId;
 
 exports.createArticle = function(req, res, next) {
     var articleModel = new Article(req.body);
@@ -11,14 +11,14 @@ exports.createArticle = function(req, res, next) {
             res.json({
                 type: false,
                 data: "Error occured: " + err
-            })
-        } else {
-            res.json({
-                type: true,
-                data: article
-            })
+            });
         }
-    })
+
+        res.json({
+            type: true,
+            data: article
+        });
+    });
 }
 
 exports.viewArticle = function(req, res, next) {
@@ -28,21 +28,21 @@ exports.viewArticle = function(req, res, next) {
             res.json({
                 type: false,
                 data: "Error occured: " + err
-            })
-        } else {
-            if (article) {
-                res.json({
-                    type: true,
-                    data: article
-                })
-            } else {
-                res.json({
-                    type: false,
-                    data: "Article: " + req.params.id + " not found"
-                })
-            }
+            });
         }
-    })
+
+        if (article) {
+            res.json({
+                type: true,
+                data: article
+            });
+        }
+
+        res.json({
+            type: false,
+            data: "Article: " + req.params.id + " not found"
+        });
+    });
 }
 
 exports.viewArticle_v2 = function(req, res, next) {
@@ -52,22 +52,22 @@ exports.viewArticle_v2 = function(req, res, next) {
             res.json({
                 type: false,
                 data: "Error occured: " + err
-            })
-        } else {
-            if (article) {
-                article.title = article.title + " v2"
-                res.json({
-                    type: true,
-                    data: article
-                })
-            } else {
-                res.json({
-                    type: false,
-                    data: "Article: " + req.params.id + " not found"
-                })
-            }
+            });
         }
-    })
+
+        if (article) {
+            article.title = article.title + " v2"
+            res.json({
+                type: true,
+                data: article
+            });
+        }
+
+        res.json({
+            type: false,
+            data: "Article: " + req.params.id + " not found"
+        });
+    });
 }
 
 exports.updateArticle = function(req, res, next) {
@@ -78,21 +78,21 @@ exports.updateArticle = function(req, res, next) {
             res.json({
                 type: false,
                 data: "Error occured: " + err
-            })
-        } else {
-            if (article) {
-                res.json({
-                    type: true,
-                    data: article
-                })
-            } else {
-                res.json({
-                    type: false,
-                    data: "Article: " + req.params.id + " not found"
-                })
-            }
+            });
         }
-    })
+
+        if (article) {
+            res.json({
+                type: true,
+                data: article
+            });
+        }
+
+        res.json({
+            type: false,
+            data: "Article: " + req.params.id + " not found"
+        });
+    });
 }
 
 exports.deleteArticle = function(req, res, next) {
@@ -102,14 +102,14 @@ exports.deleteArticle = function(req, res, next) {
             res.json({
                 type: false,
                 data: "Error occured: " + err
-            })
-        } else {
-            res.json({
-                type: true,
-                data: "Article: " + req.params.id + " deleted successfully"
-            })
+            });
         }
-    })
+
+        res.json({
+            type: true,
+            data: "Article: " + req.params.id + " deleted successfully"
+        });
+    });
 }
 
 exports.createArticleComment = function(req, res, next) {
@@ -119,24 +119,22 @@ exports.createArticleComment = function(req, res, next) {
                type: false,
                 data: "Error occured: " + err
             });
-        } else {
-            if (article) {
-                var commentModel = new Comment(req.body);
-                article.comments.push(commentModel);
-                article.save(function(err, result) {
-                    res.json({
-                       type: true,
-                        data: result
-                    });
-                });
-            } else {
+        }
+        
+        if (article) {
+            var commentModel = new Comment(req.body);
+            article.comments.push(commentModel);
+            article.save(function(err, result) {
                 res.json({
-                    type: false,
-                    data: "Article: " + req.params.id + " not found"
+                   type: true,
+                    data: result
                 });
-            }
+            });
         }
 
-
-    })
+        res.json({
+            type: false,
+            data: "Article: " + req.params.id + " not found"
+        });
+    });
 }

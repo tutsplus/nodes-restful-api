@@ -3,7 +3,7 @@ exports.notFound = function(req, res) {
     res.json({
         error: 'not found',
         url: req.originalUrl
-    })
+    });
 }
 
 exports.checkVersionAndContentType = function(req, res, next) {
@@ -12,5 +12,5 @@ exports.checkVersionAndContentType = function(req, res, next) {
         version = req.headers["accept"].split("-")[1].split("+")[0];
     }
     req.version = version;
-    next()
+    next();
 }
